@@ -1,0 +1,130 @@
+/* ==========================================================
+   css/destinasi.css  —  Styling untuk destinasi.html
+   Website Wisata Enrekang
+
+   DAFTAR ISI:
+   1. Reset & Body
+   2. Header
+   3. Judul Halaman
+   4. Filter & Pencarian
+   5. Grid Kartu
+   6. Kartu Destinasi
+   7. Loading Skeleton
+   8. Responsive
+========================================================== */
+
+/* 1. RESET & BODY */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: #f5f2ee; color: #1a1612; min-height: 100vh; }
+
+/* 2. HEADER */
+.site-header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(245,242,238,0.88);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+}
+
+.logo { font-family: 'Lora', serif; font-weight: 700; font-size: 18px; color: #1a1612; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.logo span { color: #2d6a4f; }
+
+.header-back { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: #6b6560; text-decoration: none; transition: color 0.2s; }
+.header-back:hover { color: #2d6a4f; }
+.header-back svg { width: 16px; height: 16px; }
+
+/* 3. JUDUL HALAMAN */
+.page-hero { padding: 64px 5% 40px; display: flex; flex-direction: column; gap: 32px; }
+.page-hero-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.page-title { font-family: 'Lora', serif; font-size: clamp(36px, 5vw, 64px); font-weight: 700; line-height: 1.1; color: #1a1612; }
+.page-title em { font-style: italic; color: #2d6a4f; }
+.page-count { font-size: 13px; color: #a09890; white-space: nowrap; padding-bottom: 8px; }
+
+/* 4. FILTER & PENCARIAN */
+.filter-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.filter-btn {
+    padding: 8px 18px; border-radius: 99px;
+    border: 1.5px solid rgba(0,0,0,0.1);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; color: #6b6560;
+    cursor: pointer; transition: all 0.2s;
+}
+.filter-btn:hover { border-color: #2d6a4f; color: #2d6a4f; }
+.filter-btn.active { background: #2d6a4f; border-color: #2d6a4f; color: white; }
+
+.search-wrap { margin-left: auto; position: relative; }
+.search-input {
+    padding: 8px 16px 8px 38px; border-radius: 99px;
+    border: 1.5px solid rgba(0,0,0,0.1);
+    background: white; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; color: #1a1612; width: 220px;
+    transition: border-color 0.2s, width 0.3s; outline: none;
+}
+.search-input:focus { border-color: #2d6a4f; width: 260px; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #a09890; pointer-events: none; }
+
+/* 5. GRID KARTU */
+.dest-grid {
+    padding: 0 5% 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 28px;
+}
+
+/* 6. KARTU DESTINASI */
+.card {
+    background: white; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    cursor: pointer;
+    /* Animasi muncul dari bawah saat render */
+    opacity: 0; transform: translateY(24px);
+    animation: kartuMuncul 0.5s ease forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.12); }
+
+/* Foto kartu */
+.card-img { position: relative; height: 220px; overflow: hidden; }
+.card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+.card:hover .card-img img { transform: scale(1.06); }
+
+/* Badge-badge di atas foto */
+.card-badge { position: absolute; top: 14px; left: 14px; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-radius: 99px; padding: 5px 12px; font-size: 11px; font-weight: 600; color: #1a1612; display: flex; align-items: center; gap: 5px; }
+.card-jarak  { position: absolute; bottom: 14px; right: 14px; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 600; color: white; display: flex; align-items: center; gap: 4px; }
+.card-populer{ position: absolute; top: 14px; right: 14px; background: #e9c46a; border-radius: 99px; padding: 4px 10px; font-size: 10px; font-weight: 700; color: #1a1612; }
+
+/* Isi kartu */
+.card-body   { padding: 20px 22px 22px; }
+.card-lokasi { font-size: 12px; color: #a09890; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; text-decoration:none;}
+.card-judul  { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; line-height: 1.25; margin-bottom: 10px; color: #1a1612; }
+.card-desc   { font-size: 13.5px; color: #6b6560; line-height: 1.7; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Tag fasilitas */
+.card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+.card-tag  { font-size: 11px; padding: 4px 11px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); color: #6b6560; background: #f5f2ee; }
+
+/* Footer kartu */
+.card-footer    { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.06); padding-top: 14px; }
+.card-pengelola { font-size: 12px; color: #a09890; display: flex; align-items: center; gap: 4px; }
+.card-cta       { font-size: 13px; font-weight: 600; color: #2d6a4f; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: gap 0.2s; }
+.card-cta:hover { gap: 8px; }
+
+/* 7. LOADING SKELETON */
+.skeleton { background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%); background-size: 200% 100%; animation: kilauSkeleton 1.4s infinite; border-radius: 20px; height: 380px; }
+
+/* 8. ANIMASI */
+@keyframes kartuMuncul   { to { opacity: 1; transform: translateY(0); } }
+@keyframes kilauSkeleton { to { background-position: -200% 0; } }
+
+/* 9. RESPONSIVE */
+@media (max-width: 640px) {
+    .dest-grid    { grid-template-columns: 1fr; gap: 20px; }
+    .search-wrap  { order: -1; width: 100%; }
+    .search-input { width: 100%; }
+    .search-input:focus { width: 100%; }
+}

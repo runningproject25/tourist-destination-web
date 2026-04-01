@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jelajahi Enrekang</title>
+
+    <!-- Font dari Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
+
+    <!-- CSS kita sendiri -->
+    <link rel="stylesheet" href="css/utama.css">
+</head>
+<body>
+    <header id="navbar" class="navbar">
+        <!-- Logo -->
+        <a href="index.html" id="nav-logo">
+            <img src="images/logo dispopar.jpg" alt="logo_dispopar" class="logo">
+        </a>
+
+        <!-- Menu tengah -->
+        <nav id="nav-menu">
+            <a href="#hero-intro" class="nav-link">Beranda</a>
+            <a href="#destinasi-wrapper" class="nav-link">Destinasi</a>
+            <a href="destinasi.html" class="nav-link">Semua Wisata</a>
+            <a href="#outro" class="nav-link">Tentang</a>
+        </nav>
+
+        <!-- Kanan: tombol + hamburger mobile -->
+        <div id="nav-kanan">
+            <a href="destinasi.html" id="nav-cta">Jelajahi Sekarang</a>
+            <button id="nav-hamburger" onclick="toggleMenu()" aria-label="Buka menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+    <!-- ═══════════════════════════════════════
+         PROGRESS BAR (garis tipis di paling atas)
+    ════════════════════════════════════════ -->
+    <div id="progress-bar"></div>
+
+
+    <!-- ═══════════════════════════════════════
+         NAV DOTS (titik navigasi kanan layar)
+    ════════════════════════════════════════ -->
+    <nav id="nav-dots">
+        <!-- Diisi otomatis oleh utama.js -->
+    </nav>
+
+
+    <!-- ═══════════════════════════════════════
+         COUNTER (nomor destinasi kiri bawah)
+    ════════════════════════════════════════ -->
+    <div id="counter">
+        <span id="counter-current">01</span>
+        <span id="counter-sep">/</span>
+        <span id="counter-total">05</span>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════
+         KONTROL AUDIO (kiri atas)
+    ════════════════════════════════════════ -->
+    <div id="audio-ctrl">
+        <button id="audio-btn" title="Mute / Unmute">
+            <svg id="ico-on" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M15.536 8.464a5 5 0 010 7.072M12 6.253v13m0-13C10.833 5.083 8.8 4 7 4a4 4 0 00-4 4v4a4 4 0 004 4c1.8 0 3.833-1.083 5-2.253m0-13C13.167 5.083 15.2 4 17 4a4 4 0 014 4v4a4 4 0 01-4 4c-1.8 0-3.833-1.083-5-2.253"/>
+            </svg>
+            <svg id="ico-off" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="display:none">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707A1 1 0 0112 5v14a1 1 0 01-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+            </svg>
+        </button>
+        <div id="eq" class="muted">
+            <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div id="sound-name"></div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════
+         HERO
+    ════════════════════════════════════════ -->
+    <section id="hero-intro" class="musim-siang">
+
+        <!-- ════════════════════════════════
+             #hero-bg — TARUH SEMUA LAYER GAMBAR DI SINI
+             Susun dari belakang ke depan (z-index rendah ke tinggi)
+
+             Contoh isi yang bisa kamu masukkan:
+             - Langit siang/senja/malam
+             - Tebing (cliff)
+             - Gunung
+             - Foreground
+
+             Gambar-gambar ini dikontrol JS melalui class:
+               .musim-siang  → tampilkan id="day", id="gunung-day"
+               .musim-senja  → tampilkan id="sunset", id="gunung-sunset"
+               .musim-malam  → tampilkan id="night", id="gunung-night"
+        ════════════════════════════════ -->
+        <div id="hero-bg">
+            <img src="images/day.png"   id="day" data-speedy="0.4" data-speedz="0"  data-distance="-200" class="parallax layer-cliff" alt="foto tebing mandu">
+            <img src="images/gunung-day.png"    id="gunung-day"    data-speedx="0.00" data-speedy="-0.3" data-speedz="0" data-rotation="0" data-distance="-20" class="parallax layer-gunung" alt="foto tebing mandu">
+        </div>
+
+        <!-- Overlay gelap agar teks terbaca -->
+        <!-- <div class="intro-overlay"></div> -->
+
+        <!-- Kilat (toggle JS saat malam/hujan) -->
+        <div id="lightning"></div>
+
+        <!-- Canvas tetesan hujan -->
+        <canvas id="rain-canvas"></canvas>
+
+        <!-- Kabut bawah -->
+        <div id="ground-mist"></div>
+
+        <!-- Teks hero -->
+        <div class="intro-content">
+            <p class="intro-eyebrow">Wisata Unggulan — DISPOPAR Enrekang</p>
+            <h1 class="intro-title">
+                Jelajahi
+                <em>Enrekang</em>
+            </h1>
+            <!-- <p class="intro-desc">
+                Scroll untuk menjelajah 5 destinasi wisata populer —
+                suara alam, video, dan atmosfer yang berubah.
+            </p> -->
+            <div class="intro-scroll"
+                 onclick="document.querySelector('.destinasi').scrollIntoView({behavior:'smooth'})">
+                <div class="scroll-line"></div>
+                Mulai Jelajahi
+            </div>
+        </div>
+
+        <!-- Tombol pilih waktu -->
+        <!-- <div id="musim-ctrl">
+            <button class="musim-btn active" id="btn-siang"
+                    onclick="gantiMusim('siang')">☀️ Siang</button>
+            <button class="musim-btn" id="btn-senja"
+                    onclick="gantiMusim('senja')">🌅 Senja</button>
+            <button class="musim-btn" id="btn-malam"
+                    onclick="gantiMusim('malam')">🌙 Malam</button>
+        </div> -->
+
+    </section>
+
+
+    <!-- ═══════════════════════════════════════
+         DESTINASI + VIDEO (diisi JS)
+    ════════════════════════════════════════ -->
+    <div id="destinasi-wrapper"></div>
+
+
+    <!-- ═══════════════════════════════════════
+         OUTRO
+    ════════════════════════════════════════ -->
+    <section id="outro">
+        <div class="outro-bg"></div>
+        <div class="outro-content">
+            <h2 class="outro-title">Siap Menjelajah<br>Enrekang?</h2>
+            <p class="outro-sub">Masih banyak destinasi lain yang menanti</p>
+            <a href="destinasi.html" class="outro-btn">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+                Lihat Semua Destinasi
+            </a>
+        </div>
+    </section>
+
+
+    
+    <!-- GSAP untuk animasi intro parallax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="js/utama.js"></script>
+</body>
+</html>
